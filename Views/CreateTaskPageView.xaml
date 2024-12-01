@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:ToDoApp.ViewModels"
+             x:Class="ToDoApp.Views.CreateTaskPageView"
+             x:DataType="vm:CreateTaskPageViewModel"
+             Title="CreateTaskPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:IsNullConverter x:Key="IsNullConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False"/>
+    </Shell.BackButtonBehavior>
+
+    <Grid Style="{StaticResource CreateTaskPageGrid}">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" WidthRequest="200" HeightRequest="200" Margin="0,0,0,32" BackgroundColor="{DynamicResource White}">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="8" />
+            </Border.StrokeShape>
+
+            <Border.Shadow>
+                <Shadow Offset="10,10" Radius="30" Opacity="0.5" Brush="{DynamicResource Black}" />
+            </Border.Shadow>
+
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
+            </Border.GestureRecognizers>
+
+                <Image Aspect="AspectFill">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Source" Value="{Binding Photo}" />
+                            <Style.Triggers>
+                                <DataTrigger TargetType="Image" Binding="{Binding Photo, Converter={StaticResource IsNullConverter}}" Value="True">
+                                    <Setter Property="Source">
+                                        <FontImageSource
+                                        Glyph="add_a_photo"
+                                        FontFamily="MaterialIcons"
+                                        Color="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDarkText}}"/>
+                                    </Setter>
+                                    <Setter Property="WidthRequest" Value="50" />
+                                    <Setter Property="HeightRequest" Value="50" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+
+        </Border>
+
+        <Label Grid.Row="1" Grid.Column="0" Text="Priority:" />
+        <Border Grid.Row="1" Grid.Column="1" Padding="10,4,0,0" StrokeThickness="0" BackgroundColor="{DynamicResource White}">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="8" />
+            </Border.StrokeShape>
+
+
+            <Border.Shadow>
+                <Shadow
+                Radius="50"
+                Offset="0,1"
+                Opacity="0.7"
+                Brush="{DynamicResource Black}" />
+            </Border.Shadow>
+
+            <Picker ItemsSource="{Binding Priorities, Mode=OneTime}" SelectedItem="{Binding Priority, Mode=TwoWay}" />
+
+        </Border>
+
+        <Label Grid.Row="2" Grid.Column="0" Text="Title:" />
+        <Border Grid.Row="2" Grid.Column="1" Padding="10,4,0,0" StrokeThickness="0" BackgroundColor="{DynamicResource White}">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="8" />
+            </Border.StrokeShape>
+
+            <Border.Shadow>
+                <Shadow
+                    Radius="50"
+                    Offset="0,1"
+                    Opacity="0.7"
+                    Brush="{DynamicResource Black}" />
+            </Border.Shadow>
+
+            <Entry Text="{Binding TaskTitle}" />
+
+        </Border>
+
+        <Label Grid.Row="3" Grid.Column="0" Text="Description:" />
+        <Border Grid.Row="3" Grid.Column="1" Padding="10,4,0,0" StrokeThickness="0" BackgroundColor="{DynamicResource White}">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="8" />
+            </Border.StrokeShape>
+
+            <Border.Shadow>
+                <Shadow
+                    Radius="50"
+                    Offset="0,1"
+                    Opacity="0.7"
+                    Brush="{DynamicResource Black}" />
+            </Border.Shadow>
+
+            <Entry Text="{Binding TaskDescription}" />
+
+        </Border>
+
+        <Label Grid.Row="4" Grid.Column="0" Text="Due Date:" />
+        <Border Grid.Row="4" Grid.Column="1" Padding="10,4,0,0" StrokeThickness="0" BackgroundColor="{DynamicResource White}">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="8" />
+            </Border.StrokeShape>
+
+            <Border.Shadow>
+                <Shadow
+                    Radius="50"
+                    Offset="0,1"
+                    Opacity="0.7"
+                    Brush="{DynamicResource Black}" />
+            </Border.Shadow>
+
+            <DatePicker Date="{Binding DueDate, Mode=TwoWay}" MinimumDate="{Binding MinimumDate, Mode=OneWay}" />
+
+        </Border>
+
+        <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,33,0,0" Text="Create" Command="{Binding CreateTaskCommand}">
+
+            <Button.Shadow>
+                <Shadow
+                    Radius="50"
+                    Offset="0,1"
+                    Opacity="0.7"
+                    Brush="{DynamicResource Black}" />
+            </Button.Shadow>
+
+        </Button>
+
+    </Grid>
+
+</ContentPage>

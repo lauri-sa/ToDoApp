@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:ToDoApp.ViewModels"
+             x:Class="ToDoApp.Views.TaskDetailPageView"
+             x:DataType="vm:TaskDetailPageViewModel"
+             Title="TaskDetailPageView">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:IsNullConverter x:Key="IsNullConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False"/>
+    </Shell.BackButtonBehavior>
+
+    <VerticalStackLayout Spacing="20" VerticalOptions="Center" HorizontalOptions="Center" Margin="20,0,20,0">
+
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" WidthRequest="200" HeightRequest="200" Margin="0,0,0,47" BackgroundColor="{DynamicResource White}">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="8" />
+            </Border.StrokeShape>
+
+            <Border.Shadow>
+                <Shadow Offset="10,10" Radius="30" Opacity="0.5" Brush="{DynamicResource Black}" />
+            </Border.Shadow>
+
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer />
+            </Border.GestureRecognizers>
+
+            <Image Aspect="AspectFill">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Source" Value="{Binding TaskImagePath}" />
+                        <Style.Triggers>
+                            <DataTrigger TargetType="Image" Binding="{Binding TaskImagePath, Converter={StaticResource IsNullConverter}}" Value="True">
+                                <Setter Property="Source">
+                                    <FontImageSource
+                                        Glyph="no_photography"
+                                        FontFamily="MaterialIcons"
+                                        Color="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDarkText}}"/>
+                                </Setter>
+                                <Setter Property="WidthRequest" Value="50" />
+                                <Setter Property="HeightRequest" Value="50" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+        </Border>
+
+        <Label Text="{Binding TaskTitle}" HorizontalTextAlignment="Center" FontSize="26" FontAttributes="Bold" />
+
+        <Label Text="Priority" HorizontalTextAlignment="Center" FontSize="20" FontAttributes="Bold" TextDecorations="Underline" />
+        <Label Text="{Binding TaskPriority}" HorizontalTextAlignment="Center" FontSize="18" />
+
+        <Label Text="Description" HorizontalTextAlignment="Center" FontSize="20" FontAttributes="Bold" TextDecorations="Underline" />
+        <Label Text="{Binding TaskDescription}" HorizontalTextAlignment="Center" FontSize="18" />
+
+        <Label Text="Due Date" HorizontalTextAlignment="Center" FontSize="20" FontAttributes="Bold" TextDecorations="Underline" />
+        <Label Text="{Binding TaskDueDate}" HorizontalTextAlignment="Center" FontSize="18" />
+
+    </VerticalStackLayout>
+
+</ContentPage>

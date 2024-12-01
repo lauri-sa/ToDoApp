@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:ToDoApp.ViewModels"
+             x:Class="ToDoApp.Views.MainPageView"
+             x:DataType="vm:MainPageViewModel"
+             Title="MainPage">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="NavigatedTo" Command="{Binding OnNavigatedCommand}" />
+    </ContentPage.Behaviors>
+
+    <VerticalStackLayout Style="{StaticResource MainPageLayout}">
+        <Image>
+            <Image.Source>
+                <FontImageSource
+                    Glyph="fact_check"
+                    FontFamily="MaterialIcons"
+                    Size="200" />
+            </Image.Source>
+
+            <Image.Shadow>
+                <Shadow
+                Radius="30"
+                Offset="10,10"
+                Opacity="0.5"
+                Brush="{DynamicResource Black}"/>
+            </Image.Shadow>
+            
+        </Image>
+        <Label 
+            Text="Task Manager"
+            Style="{StaticResource Headline}">
+
+            <Label.Shadow>
+                <Shadow
+                Radius="20"
+                Offset="5,5"
+                Opacity="0.6"
+                Brush="{DynamicResource Black}" />
+            </Label.Shadow>
+
+        </Label>
+        <Label
+            WidthRequest="400"
+            Text="Stay organized, stay productive"
+            Style="{StaticResource SubHeadline}">
+
+            <Label.Shadow>
+                <Shadow
+                Radius="10"
+                Offset="3,3"
+                Opacity="0.4"
+                Brush="{DynamicResource Black}" />
+            </Label.Shadow>
+
+        </Label>
+        <Button WidthRequest="200"
+                Margin="0,15,0,0"
+                Text="Add Task"
+                VerticalOptions="Center"
+                Command="{Binding NavigateToCreateTaskCommand}">
+
+            <Button.Shadow>
+                <Shadow
+                Radius="50"
+                Offset="0,1"
+                Opacity="0.7"
+                Brush="{DynamicResource Black}" />
+            </Button.Shadow>
+
+        </Button>
+        <Button WidthRequest="200"
+            Text="Manage Tasks"
+            VerticalOptions="Center"
+            Command="{Binding NavigateToTaskListCommand}">
+
+            <Button.Shadow>
+                <Shadow
+                Radius="50"
+                Offset="0,1"
+                Opacity="0.7"
+                Brush="{DynamicResource Black}" />
+            </Button.Shadow>
+
+        </Button>
+
+        <Label 
+            Text="{Binding TasksCompletionInfo}"
+            WidthRequest="400"
+            FontSize="16"
+            Margin="0,60,0,0"
+            HorizontalTextAlignment="Center">
+
+            <Label.Shadow>
+                <Shadow
+                    Radius="10"
+                    Offset="3,3"
+                    Opacity="0.5"
+                    Brush="{DynamicResource Black}" />
+            </Label.Shadow>
+
+        </Label>
+
+    </VerticalStackLayout>
+
+</ContentPage>

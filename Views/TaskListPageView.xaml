@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ToDoApp.ViewModels"
+             x:Class="ToDoApp.Views.TaskListPageView"
+             x:DataType="vm:TaskListPageViewModel"
+             Title="TaskListPage">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False"/>
+    </Shell.BackButtonBehavior>
+
+    <Grid Style="{StaticResource TaskListPageLayout}">
+
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding HideTaskSelectorsCommand}" />
+        </Grid.GestureRecognizers>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Text="{Binding HeaderText}" Style="{StaticResource Headline}" />
+
+        <Border Grid.Row="1" Margin="0,20,0,0" Style="{StaticResource ButtonGroupWrapper}" >
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Text="Priority" Grid.Column="0" Command="{Binding ChangeSortCommand}">
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="CornerRadius" Value="0" />
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource OffBlack}}" />
+                            <Setter Property="TextColor" Value="{StaticResource White}" />
+                            <Setter Property="FontSize" Value="18" />
+                            <Style.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding SortedByDueDate}" Value="false">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                </Button>
+
+                <Button Text="Due Date" Grid.Column="1" Command="{Binding ChangeSortCommand}">
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="CornerRadius" Value="0" />
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource OffBlack}}" />
+                            <Setter Property="TextColor" Value="{StaticResource White}" />
+                            <Setter Property="FontSize" Value="18" />
+                            <Style.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding SortedByDueDate}" Value="true">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                </Button>
+
+            </Grid>
+
+        </Border>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Text="Priority" Style="{StaticResource TaskListHeaderLabel}" />
+            <Label Grid.Row="0" Grid.Column="1" Text="Title" Style="{StaticResource TaskListHeaderLabel}" />
+            <Label Grid.Row="0" Grid.Column="2" Text="Due Date" Style="{StaticResource TaskListHeaderLabel}" />
+        </Grid>
+
+        <Border Grid.Row="3" Style="{StaticResource Separator}" />
+
+        <Label Grid.Row="4" Margin="0,20,0,0" Text="{Binding EmptyListText}" Style="{StaticResource SubHeadline}">
+
+            <Label.Triggers>
+                <DataTrigger TargetType="Label" Binding="{Binding IsTaskListEmpty}" Value="false">
+                    <Setter Property="IsVisible" Value="Collapse" />
+                </DataTrigger>
+            </Label.Triggers>
+
+        </Label>
+
+        <CollectionView Grid.Row="4" ItemsSource="{Binding FilteredTasks}" SelectedItem="{Binding SelectedTask}" SelectionMode="Single" SelectionChangedCommand="{Binding ShowTaskSelectorsCommand}">
+
+            <CollectionView.Triggers>
+                <DataTrigger TargetType="CollectionView" Binding="{Binding IsTaskListEmpty}" Value="true">
+                    <Setter Property="IsVisible" Value="Collapse" />
+                </DataTrigger>
+            </CollectionView.Triggers>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:TaskItemViewModel">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="75" />
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Priority}" Style="{StaticResource TaskListLabel}">
+
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="true">
+                                    <Setter Property="IsVisible" Value="Collapse" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding Priority}" Value="High">
+                                    <Setter Property="TextColor" Value="{StaticResource Red}" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding Priority}" Value="Medium">
+                                    <Setter Property="TextColor" Value="{StaticResource Orange}" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding Priority}" Value="Low">
+                                    <Setter Property="TextColor" Value="{StaticResource Green}" />
+                                </DataTrigger>
+                            </Label.Triggers>
+
+                        </Label>
+
+                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title}" Style="{StaticResource TaskListLabel}">
+
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="true">
+                                    <Setter Property="IsVisible" Value="Collapse" />
+                                </DataTrigger>
+                            </Label.Triggers>
+
+                        </Label>
+                        <Label Grid.Row="0" Grid.Column="2" Text="{Binding DueDate}" TextColor="{Binding DueDateColor}" Style="{StaticResource TaskListLabel}">
+
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="true">
+                                    <Setter Property="IsVisible" Value="Collapse" />
+                                </DataTrigger>
+                            </Label.Triggers>
+
+                        </Label>
+
+                        <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource SelectorButton}" Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:TaskListPageViewModel}}, Path=SetIsCompletedCommand}" CommandParameter="{Binding}">
+
+                            <Button.ImageSource>
+                                <FontImageSource Glyph="check" FontFamily="MaterialIcons" Size="40" Color="{StaticResource Green}" />
+                            </Button.ImageSource>
+
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="false">
+                                    <Setter Property="IsVisible" Value="Collapse" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button" Binding="{Binding IsCompleted}" Value="true">
+                                    <Setter Property="ImageSource">
+                                        <Setter.Value>
+                                            <FontImageSource Glyph="cancel" FontFamily="MaterialIcons" Size="30" Color="{StaticResource Red}" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Button.Triggers>
+
+                        </Button>
+
+                        <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource SelectorButton}" Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:TaskListPageViewModel}}, Path=OpenDetailsPageCommand}" CommandParameter="{Binding}">
+
+                            <Button.ImageSource>
+                                <FontImageSource Glyph="info" FontFamily="MaterialIcons" Size="30" Color="{StaticResource Blue}" />
+                            </Button.ImageSource>
+
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="false">
+                                    <Setter Property="IsVisible" Value="Collapse" />
+                                </DataTrigger>
+                            </Button.Triggers>
+
+                        </Button>
+
+                        <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource SelectorButton}" Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:TaskListPageViewModel}}, Path=DeleteTaskCommand}" CommandParameter="{Binding}">
+
+                            <Button.ImageSource>
+                                <FontImageSource Glyph="delete" FontFamily="MaterialIcons" Size="35" Color="{StaticResource Red}" />
+                            </Button.ImageSource>
+
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="false">
+                                    <Setter Property="IsVisible" Value="Collapse" />
+                                </DataTrigger>
+                            </Button.Triggers>
+
+                        </Button>
+
+                    </Grid>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Border Grid.Row="5" Style="{StaticResource Separator}" />
+
+        <ContentView Grid.Row="6" Style="{StaticResource ListSelectorWrapper}">
+
+            <Border Style="{StaticResource ButtonGroupWrapper}">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Text="Incompleted" Grid.Column="0" Command="{Binding ChangeListCommand}">
+
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="CornerRadius" Value="0" />
+                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource OffBlack}}" />
+                                <Setter Property="TextColor" Value="{StaticResource White}" />
+                                <Setter Property="FontSize" Value="18" />
+                                <Style.Triggers>
+                                    <DataTrigger TargetType="Button" Binding="{Binding CompletedListSelected}" Value="false">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                    </Button>
+
+                    <Button Text="Completed" Grid.Column="1" Command="{Binding ChangeListCommand}">
+
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="CornerRadius" Value="0" />
+                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource OffBlack}}" />
+                                <Setter Property="TextColor" Value="{StaticResource White}" />
+                                <Setter Property="FontSize" Value="18" />
+                                <Style.Triggers>
+                                    <DataTrigger TargetType="Button" Binding="{Binding CompletedListSelected}" Value="true">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                    </Button>
+                </Grid>
+
+            </Border>
+
+        </ContentView>
+
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ToDoApp.Controls.CustomSwitchControl"
+             Loaded="ControlLoaded">
+
+    <Grid>
+
+        <Border
+            x:Name="Track"
+            WidthRequest="74"
+            HeightRequest="37"
+            StrokeThickness="2"
+            BackgroundColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDarkText}}"
+            Stroke="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDarkText}}">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="8" />
+            </Border.StrokeShape>
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="0" MaximumHeightRequest="20" MaximumWidthRequest="20" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Image.Source>
+                        <FontImageSource
+                            x:Name="LightModeIcon"
+                            Glyph="light_mode"
+                            FontFamily="MaterialIcons" />
+                    </Image.Source>
+                </Image>
+
+                <Image Grid.Column="1" MaximumHeightRequest="20" MaximumWidthRequest="20" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Image.Source>
+                        <FontImageSource
+                            x:Name="DarkModeIcon"
+                            Glyph="dark_mode"
+                            FontFamily="MaterialIcons"/>
+                    </Image.Source>
+                </Image>
+
+            </Grid>
+            
+        </Border>
+
+        <Border
+            x:Name="Thumb"
+            WidthRequest="35"
+            HeightRequest="31"
+            StrokeThickness="2"
+            Stroke="{AppThemeBinding Light={DynamicResource White}, Dark={DynamicResource PrimaryDark}}"
+            HorizontalOptions="Start">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="8" />
+            </Border.StrokeShape>
+
+        </Border>
+
+    </Grid>
+    
+</ContentView>

@@ -3,13 +3,138 @@
     x:Class="ToDoApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:ToDoApp"
-    Shell.FlyoutBehavior="Disabled"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:controls="clr-namespace:ToDoApp.Controls"
+    xmlns:views="clr-namespace:ToDoApp.Views"
+    xmlns:vm="clr-namespace:ToDoApp.ViewModels"
+    x:DataType="vm:AppShellViewModel"
+    Shell.FlyoutBehavior="{Binding FlyoutBehavior}"
+    FlyoutIsPresented="{Binding IsFlyoutOpen}"
     Title="ToDoApp">
+
+    <Shell.Triggers>
+        <DataTrigger TargetType="Shell" Binding="{Binding ValidationMessage}" Value="">
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource White}, Dark={DynamicResource PrimaryDark}}" />
+        </DataTrigger>
+    </Shell.Triggers>
+    
+    <Shell.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitializeThemesCommand}" />
+    </Shell.Behaviors>
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False"/>
+    </Shell.BackButtonBehavior>
+
+    <Shell.TitleView>
+
+        <Grid Margin="-20,0,0,0">
+
+            <Grid.Triggers>
+                <DataTrigger TargetType="Grid" Binding="{Binding ValidationMessage}" Value="">
+                    <Setter Property="Margin" Value="-10,0,0,0" />
+                </DataTrigger>
+            </Grid.Triggers>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0"
+                   Grid.ColumnSpan="3"
+                   FontSize="18"
+                   HorizontalTextAlignment="Center"
+                   Text="{Binding ValidationMessage, Mode=OneWay}"
+                   TextColor="{AppThemeBinding Light={DynamicResource White}, Dark={DynamicResource PrimaryDarkText}}">
+
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding ValidationMessage}" Value="">
+                        <Setter Property="IsVisible" Value="Collapse" />
+                    </DataTrigger>
+                </Label.Triggers>
+
+            </Label>
+
+            <ImageButton Grid.Column="0" Scale="0.7" HorizontalOptions="Start" Margin="0,1,0,0" IsVisible="Collapse" Command="{Binding ToggleFlyoutCommand}">
+                <ImageButton.Source>
+                    <FontImageSource Glyph="expand_more" FontFamily="MaterialIcons" Color="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDarkText}}" />
+                </ImageButton.Source>
+
+                <ImageButton.Triggers>
+                    <DataTrigger TargetType="ImageButton" Binding="{Binding ValidationMessage}" Value="">
+                        <Setter Property="IsVisible" Value="Visible" />
+                    </DataTrigger>
+                </ImageButton.Triggers>
+
+            </ImageButton>
+
+            <Label Grid.Column="1" Text="Themes" HorizontalTextAlignment="Start" IsVisible="Collapse" TextColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDarkText}}">
+
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding ValidationMessage}" Value="">
+                        <Setter Property="IsVisible" Value="Visible" />
+                    </DataTrigger>
+                </Label.Triggers>
+
+            </Label>
+
+            <controls:CustomSwitchControl Grid.Column="2" Margin="0,0,20,0" HorizontalOptions="End" IsVisible="Collapse" IsToggled="{Binding IsDarkMode}">
+
+                <controls:CustomSwitchControl.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ToggleDarkModeCommand}" />
+                </controls:CustomSwitchControl.GestureRecognizers>
+
+                <controls:CustomSwitchControl.Triggers>
+                    <DataTrigger TargetType="controls:CustomSwitchControl" Binding="{Binding ValidationMessage}" Value="">
+                        <Setter Property="IsVisible" Value="Visible"/>
+                    </DataTrigger>
+                </controls:CustomSwitchControl.Triggers>
+
+            </controls:CustomSwitchControl>
+
+        </Grid>
+    </Shell.TitleView>
+
+    <Shell.FlyoutHeader>
+        <VerticalStackLayout>
+            <Label Text="Choose Your Theme Color" FontSize="18" Padding="0,20,0,20" HorizontalOptions="Center" VerticalOptions="Center" />
+            <Border Stroke="{DynamicResource White}" StrokeThickness="2" />
+        </VerticalStackLayout>
+    </Shell.FlyoutHeader>
+
+    <Shell.FlyoutContent>
+        <StackLayout>
+            <CollectionView ItemsSource="{Binding ColorThemes}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <VerticalStackLayout>
+                            <Label Text="{Binding [0]}"
+                                   BackgroundColor="{Binding [1]}"
+                                   Style="{DynamicResource ThemeSelectionLabel}">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AppShellViewModel}}, Path=ChangeThemeCommand}" CommandParameter="{Binding [1]}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Border Stroke="{DynamicResource White}" StrokeThickness="2" />
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </Shell.FlyoutContent>
+
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout Padding="0,20,0,20" Spacing="13">
+            <Label Text="{Binding AppVersion}" FontSize="15" HorizontalOptions="CenterAndExpand" />
+            <Label Text="{Binding Copyright}" FontSize="15" HorizontalOptions="CenterAndExpand" />
+        </VerticalStackLayout>
+    </Shell.FlyoutFooter>
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
+        ContentTemplate="{DataTemplate views:MainPageView}"
         Route="MainPage" />
 
 </Shell>

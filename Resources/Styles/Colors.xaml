@@ -6,15 +6,31 @@
 
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
 
-    <Color x:Key="Primary">#512BD4</Color>
+    <!-- Do not remove primary or it's color value -->
+    <Color x:Key="Primary">#FFC48C</Color>
     <Color x:Key="PrimaryDark">#ac99ea</Color>
     <Color x:Key="PrimaryDarkText">#242424</Color>
     <Color x:Key="Secondary">#DFD8F7</Color>
     <Color x:Key="SecondaryDarkText">#9880e5</Color>
     <Color x:Key="Tertiary">#2B0B98</Color>
 
+    <!-- You can add, remove or modify these theme colors as you like, just keep the prefix "ThemeColor" -->
+    <Color x:Key="ThemeColorPeach">#FFC48C</Color>
+    <Color x:Key="ThemeColorSky">#8CB2FF</Color>
+    <Color x:Key="ThemeColorRose">#FF8C94</Color>
+    <Color x:Key="ThemeColorLavender">#C88CFF</Color>
+    <Color x:Key="ThemeColorSunset">#FF8C6D</Color>
+    <Color x:Key="ThemeColorOcean">#8C8CFF</Color>
+    <Color x:Key="ThemeColorForest">#66CC66</Color>
+    <Color x:Key="ThemeColorBerry">#FF8CC4</Color>
+    <Color x:Key="ThemeColorPlum">#8C4CFF</Color>
+
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
+    <Color x:Key="Blue">#1976D2</Color>
+    <Color x:Key="Red">#D32F2F</Color>
+    <Color x:Key="Green">#388E3C</Color>
+    <Color x:Key="Orange">#F57C00</Color>
     <Color x:Key="Magenta">#D600AA</Color>
     <Color x:Key="MidnightBlue">#190649</Color>
     <Color x:Key="OffBlack">#1f1f1f</Color>
